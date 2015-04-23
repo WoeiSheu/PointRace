@@ -14,7 +14,7 @@ void SamplingISR(void) {
     #define T 10
     static uint8 count; 
     DisableInterrupts;     //关总中断
-    
+
     GetPosInfo();
     FuzzyCtrl();    
     if(count>T) { 
@@ -46,12 +46,19 @@ void BluetoothISR(void)
     DisableInterrupts;
 
     char ch[80];
-    int i;
+    int i, tempData[4];
     
     uart_pendstr(UART0,ch);    //接收到一个字符串
 
     for(i=0;i<8;i++)
-      uart_putchar(UART0,ch[i]-'0');
+        uart_putchar(UART0,ch[i]-'0');
+    
+    for(i = 0; i < 4; i++) {
+        tempData[i] = (ch[i]-'0') * 10 + ch[i+1]-'0';
+    }
+    
+    //IsStop   = tempData[0];
+    //SpeedSet = tempData[1];
     
     EnableInterrupts;	    //开总中断 
 } 

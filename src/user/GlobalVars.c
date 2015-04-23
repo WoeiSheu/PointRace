@@ -51,39 +51,39 @@ int32 ultraSoundTime,ABDistance;
 int32 test[10];
 
 void InitGlobalVars() {
-  Off1      = 0;
-  Off2      = 0;
-  Offset    = 0;
-  Slope     = 0;
-  SpeedSet  = 0;
-  Angle     = 0;
-  CurSpdTemp = 0;
-  CurSpd    = 0;
-  MotorDir  = 0;
-  StopDelay = 0; 
-  Straight  = 0;
-  IsStop    = FALSE;
-  LoadTabs(Tab1,Tab1,Tab1,Tab1);
+    Off1      = 0;
+    Off2      = 0;
+    Offset    = 0;
+    Slope     = 0;
+    SpeedSet  = 0;
+    Angle     = 0;
+    CurSpdTemp = 0;
+    CurSpd    = 0;
+    MotorDir  = 0;
+    StopDelay = 0; 
+    Straight  = 0;
+    IsStop    = FALSE;
+    LoadTabs(Tab1,Tab1,Tab1,Tab1);
 
-  //2015-03-18Ìí¼Ó
-  Tick = 0;
-  Y1=0;  Y2=0;  Left1=0;  Left2=0;  Right1=0;  Right2=0;  Middle=0;
-  Left=0;  Right=0;
-  OffsetKeep=0;  OffsetLeftKeep=0;  OffsetRightKeep=0;
-  Offset_I=0;  OffsetMiddle=0;
-  DirKeep=0;
-  P=0;
-  D=0;
-  
-  StartDelay = 3000;
-  //ÆÂµÀ
-  flag_ramp = 0; dt_ramp = 0; t_ramp = 0; d_ramp = 0;
-  t_ramp_delay = 3000;
-  for(uint8 i = 0; i < 8; i++) {
-    PB[i] = 0;
-  }
-  //³¬Éù²¨
-  ultraSoundTime = 0; ABDistance = 0;
-  
-  test[0] = 0;
+    //2015-03-18Ìí¼Ó
+    Tick = 0;
+    Y1=0;  Y2=0;  Left1=0;  Left2=0;  Right1=0;  Right2=0;  Middle=0;
+    Left=0;  Right=0;
+    OffsetKeep=0;  OffsetLeftKeep=0;  OffsetRightKeep=0;
+    Offset_I=0;  OffsetMiddle=0;
+    DirKeep=0;
+    P=0;
+    D=0;
+
+    StartDelay = 3000;
+    //ÆÂµÀ
+    flag_ramp = 0; dt_ramp = 0; t_ramp = 0; d_ramp = 0;
+    t_ramp_delay = 3000;
+    for(uint8 i = 0; i < 8; i++) {
+      PB[i] = 0;
+    }
+    //³¬Éù²¨
+    ultraSoundTime = 0; ABDistance = 0;
+
+    test[0] = 0;
 }

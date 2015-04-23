@@ -21,7 +21,6 @@
  */
 
 #include  "gpio.h"      //IO口操作
-#include  "CarUI.H"       //流水灯
 #include  "uart.h"      //串口
 #include  "adc.h"       //ADC模块
 #include  "FTM.h"       //FTM模块（FTM0：电机控制 / 通用 /PWM     FTM1、2：正交解码 / 通用 /PWM ）

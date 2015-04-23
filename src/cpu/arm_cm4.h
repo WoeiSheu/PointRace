@@ -85,7 +85,6 @@ typedef volatile int32		vint32; /* 32 bits */
 typedef volatile uint8		vuint8;  /*  8 bits */
 typedef volatile uint16		vuint16; /* 16 bits */
 typedef volatile uint32		vuint32; /* 32 bits */
- 
 
 typedef unsigned char           bool;
 

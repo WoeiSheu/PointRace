@@ -14,6 +14,7 @@ void InitAll() {
     InitUltraSound();
     InitUI();           //此函数要最后初始化,否则显示不正常    
     InitReedPipe();     //初始化干簧管的检测   
+    LCD_Init();
     
     pit_init_ms(PIT0,1);
     pit_init_ms(PIT1,1);
@@ -54,32 +55,32 @@ void InitActuator() {
 *  备    注：
 *************************************************************************/ 
 void InitUltraSound() {
-  //初始化两个引脚为输入,并接受中断
-  //gpio_init(PORTD,2,GPI,0);             //PTD2为超声波脉冲输出DO端
-  //gpio_init(PORTD,3,GPI,0);             //PTD3为状态输出STATE端
-  
-  SIM_SCGC5|=SIM_SCGC5_PORTD_MASK;
-  PORT_PCR_REG(PORTD_BASE_PTR, 2)&=~(PORT_PCR_MUX_MASK);
-  PORT_PCR_REG(PORTD_BASE_PTR, 2) = PORT_PCR_MUX(1);
-  
-  GPIO_PDDR_REG(PTD_BASE_PTR) &=~(1 << 2);
-  PORT_PCR_REG(PORTD_BASE_PTR, 2)&=~(PORT_PCR_PS_MASK);
-  PORT_PCR_REG(PORTD_BASE_PTR, 2)|=~(PORT_PCR_PE_MASK);
-  
-  PORT_PCR_REG(PORTD_BASE_PTR, 2)|= PORT_PCR_IRQC((uint8)0x0B);
-  
-  
-  //exti_init(PORTD,2,rising_down);
-  
-  set_irq_priority(PORTD+87,0);         //设置PORTD的中断优先级最高
-  enable_irq(PORTD + 87);
-  
-  SIM_SCGC6   |= SIM_SCGC6_PIT_MASK;//module clock  
-  PIT_MCR     &= ~PIT_MCR_MDIS_MASK;//pit module enable
-  PIT_LDVAL2   = 0xFFFFFFFF;          //bus_clk_khz
+    //初始化两个引脚为输入,并接受中断
+    //gpio_init(PORTD,2,GPI,0);             //PTD2为超声波脉冲输出DO端
+    //gpio_init(PORTD,3,GPI,0);             //PTD3为状态输出STATE端
 
-  PIT_TFLG2   |= PIT_TFLG_TIF_MASK;//clear by writing 1
-  set_irq_priority(70,1);          //设置PIT2的中断优先级次之,实际中并未用到PIT2的中断函数
+    SIM_SCGC5|=SIM_SCGC5_PORTD_MASK;
+    PORT_PCR_REG(PORTD_BASE_PTR, 2)&=~(PORT_PCR_MUX_MASK);
+    PORT_PCR_REG(PORTD_BASE_PTR, 2) = PORT_PCR_MUX(1);
+
+    GPIO_PDDR_REG(PTD_BASE_PTR) &=~(1 << 2);
+    PORT_PCR_REG(PORTD_BASE_PTR, 2)&=~(PORT_PCR_PS_MASK);
+    PORT_PCR_REG(PORTD_BASE_PTR, 2)|=~(PORT_PCR_PE_MASK);
+
+    PORT_PCR_REG(PORTD_BASE_PTR, 2)|= PORT_PCR_IRQC((uint8)0x0B);
+
+
+    //exti_init(PORTD,2,rising_down);
+
+    set_irq_priority(PORTD+87,0);         //设置PORTD的中断优先级最高
+    enable_irq(PORTD + 87);
+
+    SIM_SCGC6   |= SIM_SCGC6_PIT_MASK;//module clock  
+    PIT_MCR     &= ~PIT_MCR_MDIS_MASK;//pit module enable
+    PIT_LDVAL2   = 0xFFFFFFFF;          //bus_clk_khz
+
+    PIT_TFLG2   |= PIT_TFLG_TIF_MASK;//clear by writing 1
+    set_irq_priority(70,1);          //设置PIT2的中断优先级次之,实际中并未用到PIT2的中断函数
 }
 
 /*************************************************************************

@@ -2358,6 +2358,12 @@
       <name>$PROJ_DIR$\..\..\src\user\Misc.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\src\drivers\OLED\OLED.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\src\drivers\OLED\OLED.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\src\user\Sensor.c</name>
     </file>
     <file>
