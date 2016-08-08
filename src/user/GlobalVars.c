@@ -47,6 +47,12 @@ int16 posLoc,posKeep,LeftKeep,RightKeep,pos_I,posBak_test,posBakKeep,posBak,posB
 bool PB[8];
 //超声波
 int32 ultraSoundTime,ABDistance;
+//电机PID控制参数KPv, KIv, KDv;
+int32 KPv, KIv, KDv;
+//通过模糊表得出的控制角度的Kp,Kd,Spd;
+int32 Kp,Kd,Spd;
+//LCD显示
+int OLED_page = 0;
 //Test
 int32 test[10];
 
@@ -74,8 +80,8 @@ void InitGlobalVars() {
     DirKeep=0;
     P=0;
     D=0;
-
-    StartDelay = 3000;
+    //延时
+    StartDelay = 5000;
     //坡道
     flag_ramp = 0; dt_ramp = 0; t_ramp = 0; d_ramp = 0;
     t_ramp_delay = 3000;
@@ -84,6 +90,10 @@ void InitGlobalVars() {
     }
     //超声波
     ultraSoundTime = 0; ABDistance = 0;
-
+    //电机PID控制参数KPv=10000, KIv=40, KDv=0;
+    KPv=800;
+    KIv=20;
+    KDv=0;
+    
     test[0] = 0;
 }

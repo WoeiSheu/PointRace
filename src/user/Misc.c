@@ -131,7 +131,7 @@ void SetSteerAngle(int16 nAngle) {
      nAngle = AngleRight; 
   if(nAngle < AngleLeft )
      nAngle = AngleLeft; 
-  FTM2_C0V  = 8000 - 6*nAngle;  //62500对应200Hz,满占空比
+  FTM2_C0V  = 8000 + 5*nAngle;  //62500对应200Hz,满占空比
 }
 //电机
 void SetMotorSpeed(int16 nSpeed) {  
@@ -141,12 +141,6 @@ void SetMotorSpeed(int16 nSpeed) {
   } else {
     FTM0_C3V = nSpeed;    //周期61.25us时,1000对应40us,500对应20us
   }
-}
-//停车
-void StopCar() {
-    //disable_irq(PIT0 + 68);
-    IsStop = TRUE;
-    //SetSteerAngle(0);
 }
 /*************************************************************************
 *                           Hypocrisy
@@ -233,7 +227,7 @@ u16 FindMax(u16 ADValue,u16 *max) {
   return *max;
 }
 /*
-* 
+* 四电感公式中所要用的函数,类似于模糊,使两边电感值比较对称
 */
 void Calc_Deviation_7Gear(int16 value, int16* returnValue, int16* dividePoints, int16* targetAngle) {
   int i;
@@ -326,4 +320,143 @@ void CalcMembership(int32 value,int32 membership[],int32 bound[]) {
       }
     }
   }	
+}
+
+/*************************************************************************
+*                           Hypocrisy
+*  函数名称：ShowLCD
+*  功能说明：显示OLED
+*  参数说明：
+*  函数返回：无
+*  修改时间：2015-4-30    未测试
+*  备    注：
+*************************************************************************/
+void ShowLCD() {  
+  int32 absP,absD;
+  int32 absCurSpd,absSpd;
+  
+  unsigned char _Tick[6];
+  unsigned char _P[4],_D[4],_CurSpd[4],_Spd[4];
+  unsigned char _Left1[5],_Right1[5],_Middle[5],_Left[5],_Right[5],_Left2[5],_Right2[5],_Y1[5],_Y2[5];
+  unsigned char _ultraSoundTime[5],_ABDistance[5];
+  unsigned char _Kp[4],_Kd[4];
+  
+  Int2Char(Tick,_Tick,5);
+
+  absP=abs(P);
+  Int2Char(absP,_P,3);
+  absD=abs(D);
+  Int2Char(absD,_D,3);
+
+  absCurSpd=abs(CurSpd);
+  Int2Char(absCurSpd,_CurSpd,3);
+  
+  absSpd=abs(Spd);
+  Int2Char(absSpd,_Spd,3);
+
+  Int2Char(Left1,_Left1,4);
+  Int2Char(Right1,_Right1,4);
+  Int2Char(Middle,_Middle,4);
+  Int2Char(Left,_Left,4);
+  Int2Char(Right,_Right,4);
+
+  Int2Char(Left2,_Left2,4);
+  Int2Char(Right2,_Right2,4);
+  
+  Int2Char(Y1,_Y1,4);
+  Int2Char(Y2,_Y2,4);
+  
+  Int2Char(ultraSoundTime,_ultraSoundTime,4);
+  Int2Char(ABDistance,_ABDistance,4);
+  
+  Int2Char(Kp,_Kp,3);
+  Int2Char(Kd,_Kd,3);
+  
+  
+  if(PB[6] == 1) {
+    if(OLED_page != 1) {
+      LCD_Fill(0x00);
+    }
+    LCD_P8x16Str(36,0,"PosInfo");   //第一页："赛道信息"
+    LCD_P6x8Str(20,2,&_Y1);         //Y1
+    LCD_P6x8Str(82,2,&_Y2);         //Y2
+    LCD_P6x8Str(0,3,&_Left1);       //Left1
+    LCD_P6x8Str(51,3,&_Middle);     //Middle
+    LCD_P6x8Str(102,3,&_Right1);    //Right1
+    
+    LCD_P6x8Str(20,4,&_Left);       //Left  
+    LCD_P6x8Str(82,4,&_Right);      //Right
+    LCD_P6x8Str(20,5,&_Left2);      //Left2
+    LCD_P6x8Str(82,5,&_Right2);     //Right2
+
+    LCD_P8x16Str(0,6," P=");        //PD值显示位于电感中间
+    if(P<0) {
+      LCD_P8x16Str(24,6,"-");
+    } else {
+      LCD_P8x16Str(24,6," ");
+    }
+    LCD_P8x16Str(32,6,&_P);
+    LCD_P8x16Str(72,6,"D=");
+
+    if(D<0) {
+      LCD_P8x16Str(88,6,"-");
+    } else {
+      LCD_P8x16Str(88,6," ");
+    }
+    LCD_P8x16Str(96,6,&_D);
+    OLED_page=1;
+  } else {
+    if(OLED_page != 2) {
+      LCD_Fill(0x00); //刷新清屏      
+    }
+    LCD_P8x16Str(24,0,"StatusInfo");//第二页："状态信息" 
+    LCD_P6x8Str(42,2,"t=");
+    LCD_P6x8Str(54,2,&_Tick);  //显示时间t
+      
+    LCD_P6x8Str(0,5,"SoundTime=");
+    LCD_P6x8Str(36,5,&_ultraSoundTime);
+
+    LCD_P6x8Str(66,5,"Distance=");
+    LCD_P6x8Str(102,5,&_ABDistance);
+
+    LCD_P6x8Str(0,3,"CurSpd");
+    LCD_P6x8Str(36,3,&_CurSpd);
+
+    //LCD_P6x8Str(0,4,"CSpdR=");
+    //LCD_P6x8Str(36,4,&CSpdR);
+
+    LCD_P6x8Str(66,3,"Spd=");    //78
+    LCD_P6x8Str(96,3,&_Spd);    //108
+
+    //LCD_P6x8Str(66,4,"RSpd=");
+    //LCD_P6x8Str(96,4,&_RSpd);
+
+    //LCD_P6x8Str(30,6,"DistM=");
+    //LCD_P6x8Str(66,6,&DistanceM);
+
+    LCD_P6x8Str(0,7,"Kp=");
+    LCD_P6x8Str(24,7,&_Kp);
+
+    LCD_P6x8Str(66,7,"Kd=");
+    LCD_P6x8Str(90,7,&_Kd);
+    
+    OLED_page = 2;
+  }
+}
+
+/*************************************************************************
+*                           Hypocrisy
+*  函数名称：Int2Char
+*  功能说明：数值转换为char类型
+*  参数说明：int类型的数据, unsigned char类型的数组,数组长度n
+*  函数返回：无
+*  修改时间：2015-4-30    未测试
+*  备    注：
+*************************************************************************/
+void Int2Char(int32 data, unsigned char *returnChar, int length) {
+  returnChar[length] = '\0';
+  for(int i = 0; i < length; i++) {
+    returnChar[length-i-1] = data%10 + '0';
+    data /= 10;
+  }
 }

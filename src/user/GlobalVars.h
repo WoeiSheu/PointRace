@@ -48,6 +48,12 @@ extern int16 posLoc,posKeep,LeftKeep,RightKeep,pos_I,posBak_test,posBakKeep,posB
 extern bool PB[8];
 //超声波
 extern int32 ultraSoundTime,ABDistance;
+//电机PID控制参数KPv, KIv, KDv;
+extern int32 KPv, KIv, KDv;
+//通过模糊表得出的控制角度的Kp,Kd,Spd;
+extern int32 Kp,Kd,Spd;
+//LCD显示
+extern int OLED_page;
 //Test
 extern int32 test[10];
 

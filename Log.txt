@@ -5,4 +5,5 @@
     if(ABDistance < 1200) {
         SpeedSet -= 50;
     }
-5、
+5、在Misc.c中添加ShowLCD函数,将初始化显示LCD的一些语句写入InitUI()函数中
+6、为方便写ShowLCD()程序,将电机PID控制参数KPv、KIv、KDv写成全局变量

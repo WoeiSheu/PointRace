@@ -27,6 +27,8 @@ void SamplingISR(void) {
         count++;
     }
 
+    ShowLCD();
+    
     PIT_Flag_Clear(PIT0);       //清中断标志位
     EnableInterrupts;		//开总中断
 }
@@ -74,10 +76,11 @@ void BluetoothISR(void)
 *  备    注：
 *************************************************************************/
 void SysTimerISR(void)
-{   
+{
     for( uint8 i = 0; i <= 7; i++ ) {
       PB[i] = gpio_get(PORTC,i+10);
     }
+    
     Tick++;
     
     PIT_Flag_Clear(PIT1);       //清中断标志位

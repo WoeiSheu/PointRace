@@ -17,16 +17,6 @@
 void main()
 {   
     InitAll();
-
-    LCD_Fill(0xff);//亮屏 
-    DELAY_MS(1000); 
-    LCD_Fill(0x00);//黑屏
-    DELAY_MS(1000);      
-    LCD_Print(2,0,"北京理工大学电磁组");  //汉字字符串显示
-    LCD_Print(33,2,"1.调试模式");   //汉字字符串显示
-    LCD_Print(33,4,"2.查看电感值");   //汉字字符串显示
-    LCD_Print(33,6,"3.查看参数");   //汉字字符串显示
-    DELAY_MS(1000);
   
     while(1) {
         if(Tick % 100 == 0) {

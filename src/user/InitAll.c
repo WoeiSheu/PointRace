@@ -11,13 +11,16 @@ void InitAll() {
     InitGlobalVars();
     InitSensor();
     InitActuator();
-    InitUltraSound();
     InitUI();           //此函数要最后初始化,否则显示不正常    
     InitReedPipe();     //初始化干簧管的检测   
     LCD_Init();
+    InitUltraSound();
     
     pit_init_ms(PIT0,1);
     pit_init_ms(PIT1,1);
+    
+    //set_irq_priority(69,0);
+    //set_irq_priority(68,1);
     //DELAY_MS(2000);
 }
 
@@ -95,7 +98,8 @@ void InitUltraSound() {
 void InitUI() { 
     //------------------------------------------
     //蓝牙数据的处理在isr.c中
-    //蓝牙模块初始化     
+    //蓝牙模块初始化
+  
     uart_init(UART0,9600);
     UART_IRQ_EN(UART0);
     
@@ -103,6 +107,17 @@ void InitUI() {
     for( uint8 i = 10; i <= 17; i++ ) {
         gpio_init(PORTC,i,GPI_DOWN,0);
     }
+    
+    //LCD显示屏初始化
+    LCD_Fill(0xff);//亮屏 
+    DELAY_MS(1000); 
+    LCD_Fill(0x00);//黑屏
+    DELAY_MS(1000);      
+    LCD_Print(2,0,"北京理工大学电磁组");  //汉字字符串显示
+    LCD_Print(33,2,"1.调试模式");   //汉字字符串显示
+    LCD_Print(33,4,"2.查看电感值");   //汉字字符串显示
+    LCD_Print(33,6,"3.查看参数");   //汉字字符串显示
+    DELAY_MS(1000);
 }
 
 //初始化干簧管的检测

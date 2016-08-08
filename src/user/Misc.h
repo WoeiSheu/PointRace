@@ -39,5 +39,8 @@ void LoadTabs(TabN Kp,TabN Ki,TabN Kd,TabN Spd);
 
 //隶属度计算函数
 void CalcMembership(int32 value,int32 membership[],int32 bound[]);
- 
+
+//int32整形转为unsigned char *型
+void Int2Char(int32, unsigned char *, int);
+
 #endif  /*  MISC_H_  */
